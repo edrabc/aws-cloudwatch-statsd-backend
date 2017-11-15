@@ -8,10 +8,17 @@
     "aws-sdk": "~2.0.15",
     "proxy-agent": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "expect.js": "~0.3.1",
+    "mocha": "~4.0.1",
+    "sinon": "~4.1.2"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/_mocha test/*.mochatest.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +30,9 @@
     "aws",
     "amazon",
     "cloudwatchappender"
-  ], 
-  "license": {"type": "MIT", "url": "https://github.com/camitz/aws-cloudwatch-statsd-backend/blob/master/LICENSE.md"}
+  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/camitz/aws-cloudwatch-statsd-backend/blob/master/LICENSE.md"
+  }
 }
