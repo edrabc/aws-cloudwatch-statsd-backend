@@ -108,6 +108,26 @@ Using cloudwatch will incur a cost for each metric sent. In order to control you
 
 The above configuration would only sent the metric named 'YOUR_FULL_METRIC_NAME' to cloudwatch. As this is an array, you can specify multiple metrics. This is useful if you are using multiple backends e.g. mysql backend and want to send some metrics cloudwatch (due to the associated cost) and all the metrics together to another backend. It is also useful if you want to limit the metrics you use in cloudwatch to those that raise alarms as part of your wider AWS hosted system.
 
+## Metrics Dimensions
+
+AWS cloudwatch allows dimensions to describe specific characteristics of the metrics. Dimensions help you design a structure for your statistics plan. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric. You can use dimensions to filter the results that CloudWatch returns. For example:
+
+    {
+        backends: [ "aws-cloudwatch-statsd-backend" ],
+        cloudwatch:
+        {
+            accessKeyId: 'YOUR_ACCESS_KEY_ID',
+            secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+            region: 'YOUR_REGION',
+            dimensions: {
+              Environment: 'YOUR_ENVIRONMENT',
+              Another: 'YOUR_ANOTHER_DIMENSION'
+            }
+        }
+    }
+
+The above configuration would include the dimensions array to cloudwatch. As this is an array, you can specify multiple dimension combinations.
+
 ## Using AWS Roles to obtain credentials
 
 A preferable approach to obtaining account credentials is instead to query the Metadata Service to obtain IAM security credentials for a given role. If iamRole is set to 'any' then any available credentials found on the metadata service will instead be used. For example:
