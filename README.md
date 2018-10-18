@@ -121,7 +121,7 @@ AWS cloudwatch allows dimensions to describe specific characteristics of the met
             region: 'YOUR_REGION',
             dimensions: {
               Environment: 'YOUR_ENVIRONMENT',
-              Another: 'YOUR_ANOTHER_DIMENSION'
+              Another: 'YET_ANOTHER_DIMENSION'
             }
         }
     }
