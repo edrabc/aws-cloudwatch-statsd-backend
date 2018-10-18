@@ -115,5 +115,117 @@ describe('Backend', function () {
       });
       mockCloudwatch.verify();
     });
+
+    it('should set counter dimensions', function () {
+      let instance = new Backend(1, {
+        'dimensions': {
+          'Dimension': 'unknown',
+          'Another': 'one',
+        },
+        'alias': {
+          'test.metric1': 'CloudMetric',
+        },
+      }, emitter);
+      let mockCloudwatch = sandbox.mock(instance.cloudwatch);
+
+      const expectedDimension = sinon.match.has('Dimensions', [{
+        'Name': 'Dimension',
+        'Value': 'unknown',
+      }, {
+        'Name': 'Another',
+        'Value': 'one',
+      }]);
+      const expectedName = sinon.match.has('MetricName', 'CloudMetric');
+      const expectedDatum = expectedName.and(expectedDimension);
+      mockCloudwatch.expects('putMetricData').once().withArgs(sinon.match.has('MetricData', sinon.match.has('0', expectedDatum)));
+
+      instance.flush('1500000000', {
+        'counters': {
+          'hostname1.test.metric1': 5,
+        },
+      });
+      mockCloudwatch.verify();
+    });
+
+    it('should set timer dimensions', function () {
+      let instance = new Backend(1, {
+        'dimensions': {
+          'Dimension': 'unknown',
+        },
+        'alias': {
+          'test.metric1': 'CloudMetric',
+        },
+      }, emitter);
+      let mockCloudwatch = sandbox.mock(instance.cloudwatch);
+
+      const expectedDimension = sinon.match.has('Dimensions', [{
+        'Name': 'Dimension',
+        'Value': 'unknown',
+      }]);
+      const expectedName = sinon.match.has('MetricName', 'CloudMetric');
+      const expectedDatum = expectedName.and(expectedDimension);
+      mockCloudwatch.expects('putMetricData').once().withArgs(sinon.match.has('MetricData', sinon.match.has('0', expectedDatum)));
+
+      instance.flush('1500000000', {
+        'timers': {
+          'hostname1.test.metric1': [5, 2, 5, 4, 3],
+        },
+      });
+      mockCloudwatch.verify();
+    });
+
+    it('should set gauge dimensions', function () {
+      let instance = new Backend(1, {
+        'dimensions': {
+          'Dimension': 'unknown',
+        },
+        'alias': {
+          'test.metric1': 'CloudMetric',
+        },
+      }, emitter);
+      let mockCloudwatch = sandbox.mock(instance.cloudwatch);
+
+      const expectedDimension = sinon.match.has('Dimensions', [{
+        'Name': 'Dimension',
+        'Value': 'unknown',
+      }]);
+      const expectedName = sinon.match.has('MetricName', 'CloudMetric');
+      const expectedDatum = expectedName.and(expectedDimension);
+      mockCloudwatch.expects('putMetricData').once().withArgs(sinon.match.has('MetricData', sinon.match.has('0', expectedDatum)));
+
+      instance.flush('1500000000', {
+        'gauges': {
+          'hostname1.test.metric1': 5,
+        },
+      });
+      mockCloudwatch.verify();
+    });
+
+    it('should set SET dimensions', function () {
+      let instance = new Backend(1, {
+        'dimensions': {
+          'Dimension': 'unknown',
+        },
+        'alias': {
+          'test.metric1': 'CloudMetric',
+        },
+      }, emitter);
+      let mockCloudwatch = sandbox.mock(instance.cloudwatch);
+
+      const expectedDimension = sinon.match.has('Dimensions', [{
+        'Name': 'Dimension',
+        'Value': 'unknown',
+      }]);
+      const expectedName = sinon.match.has('MetricName', 'CloudMetric');
+      const expectedDatum = expectedName.and(expectedDimension);
+      mockCloudwatch.expects('putMetricData').once().withArgs(sinon.match.has('MetricData', sinon.match.has('0', expectedDatum)));
+
+      instance.flush('1500000000', {
+        'sets': {
+          'hostname1.test.metric1': new Set(),
+        },
+      });
+      mockCloudwatch.verify();
+    });
   });
 });
